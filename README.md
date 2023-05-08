@@ -1,0 +1,2 @@
+### <span style="font-weight:bold; font-family:'Courier New', Courier, monospace;">TICKETING SYSTEM</span>
+A ticketing system is a software program that a customer support team uses to create, manage, and maintain a list (or lists) of customer problems.
