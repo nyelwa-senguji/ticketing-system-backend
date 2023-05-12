@@ -1,0 +1,7 @@
+migrateup:
+	migrate -path db/migrations  -database "dbdriver://username:password@host:port/dbname?param1=true&param2=false" -verbose up
+
+migratedown:
+	migrate -path db/migrations  -database "dbdriver://username:password@host:port/dbname?param1=true&param2=false" -verbose down
+
+.PHONY: migrateup migratedown

@@ -1,10 +1,3 @@
-CREATE TABLE `users` (
-  `id` int PRIMARY KEY AUTO_INCREMENT,
-  `username` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `role_id` int
-);
-
 CREATE TABLE `roles` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `role_name` varchar(255) NOT NULL,
@@ -17,9 +10,16 @@ CREATE TABLE `permission` (
   `status` varchar(255) NOT NULL
 );
 
+CREATE TABLE `users` (
+  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `role_id` int 
+);
+
 CREATE TABLE `permission_roles` (
-  `permission_id` int NOT NULL,
-  `role_id` int NOT NULL
+  `permission_id` int ,
+  `role_id` int 
 );
 
 CREATE TABLE `category` (
@@ -33,8 +33,8 @@ CREATE TABLE `tickets` (
   `subject` varchar(255) NOT NULL,
   `description` varchar(255) NOT NULL,
   `status` varchar(255) NOT NULL,
-  `user_id` int NOT NULL,
-  `category_id` int NOT NULL
+  `user_id` int ,
+  `category_id` int 
 );
 
 CREATE INDEX `users_index_0` ON `users` (`role_id`);
