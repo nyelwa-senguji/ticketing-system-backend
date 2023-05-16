@@ -10,6 +10,9 @@ import (
 	"os/signal"
 	"syscall"
 
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/joho/godotenv"
+
 	"github.com/go-kit/log"
 	"github.com/go-kit/log/level"
 	db "github.com/nyelwa-senguji/ticketing_system_backend/db/sqlc"
@@ -18,9 +21,19 @@ import (
 	httptransport "github.com/nyelwa-senguji/ticketing_system_backend/transport"
 )
 
-const dbsource = "mysql://root:root@tcp(localhost:3306)/ticketing_database"
-
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		panic(".env file is missing")
+	}
+
+	dbUsername := os.Getenv("DB_USER")
+	dbPassword := os.Getenv("DB_PASSWORD")
+	dbPort := os.Getenv("DB_PORT")
+	dbName := os.Getenv("DB_NAME")
+
+	dbsource := dbUsername + ":" + dbPassword + "@tcp(localhost:" + dbPort + ")/" + dbName
+
 	var httpAddr = flag.String("http", ":9000", "http listen address")
 	var logger log.Logger
 	{

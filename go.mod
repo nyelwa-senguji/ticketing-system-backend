@@ -7,7 +7,10 @@ require (
 	github.com/go-kit/log v0.2.0
 )
 
+require github.com/joho/godotenv v1.5.1
+
 require (
 	github.com/go-logfmt/logfmt v0.5.1 // indirect
+	github.com/go-sql-driver/mysql v1.7.1
 	github.com/gorilla/mux v1.8.0
 )
