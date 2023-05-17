@@ -10,7 +10,7 @@ import (
 
 type (
 	CreatePermissionResponse struct{
-		Ok string `json:"ok"`
+		Result string `json:"result"`
 	}
 )
 
@@ -29,7 +29,7 @@ func makeCreatePermissionEndpoint(s service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(db.CreatePermissionParams)
 		ok, err := s.CreatePermission(ctx, req)
-		return CreatePermissionResponse{Ok: ok}, err
+		return CreatePermissionResponse{Result: ok}, err
 	}
 }
 

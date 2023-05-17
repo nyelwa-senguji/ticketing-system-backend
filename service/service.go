@@ -31,6 +31,12 @@ func (s service) CreatePermission(ctx context.Context, permissionRequest db.Crea
 	permission := db.CreatePermissionParams{
 		PermissionName: permissionRequest.PermissionName,
 		Status:         permissionRequest.Status,
+		CreatedAt: permissionRequest.CreatedAt,
+		UpdatedAt: permissionRequest.UpdatedAt,
+	}
+
+	if permission == (db.CreatePermissionParams{}){
+		return "Permission name, Status can not be empty", nil
 	}
 
 	_, err := s.repository.CreatePermission(ctx, permission)
