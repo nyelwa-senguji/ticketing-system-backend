@@ -32,7 +32,7 @@ func main() {
 	dbPort := os.Getenv("DB_PORT")
 	dbName := os.Getenv("DB_NAME")
 
-	dbsource := dbUsername + ":" + dbPassword + "@tcp(localhost:" + dbPort + ")/" + dbName
+	dbsource := dbUsername + ":" + dbPassword + "@tcp(localhost:" + dbPort + ")/" + dbName + "?parseTime=true"
 
 	var httpAddr = flag.String("http", ":9000", "http listen address")
 	var logger log.Logger

@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"reflect"
 
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/log/level"
@@ -26,8 +27,14 @@ func NewService(repo  *db.Repository, logger log.Logger) Service {
 }
 
 func (s service) CreatePermission(ctx context.Context, permissionRequest db.CreatePermissionParams) (string, error) {
+	/*********************************************************
+		1. Logging the method name
+	*********************************************************/
 	logger := log.With(s.logger, "method", "CreatePermission")
 
+	/*********************************************************
+		2. Assigning permision variable with new request
+	*********************************************************/
 	permission := db.CreatePermissionParams{
 		PermissionName: permissionRequest.PermissionName,
 		Status:         permissionRequest.Status,
@@ -35,10 +42,23 @@ func (s service) CreatePermission(ctx context.Context, permissionRequest db.Crea
 		UpdatedAt: permissionRequest.UpdatedAt,
 	}
 
-	if permission == (db.CreatePermissionParams{}){
-		return "Permission name, Status can not be empty", nil
+	/*********************************************************
+		3. Check if permission name is empty
+	*********************************************************/
+	if(reflect.DeepEqual(permission.PermissionName, "")){
+		return "Permission name can not be empty", nil
 	}
 
+	/*********************************************************
+		4. Check if status is empty
+	*********************************************************/
+	if(reflect.DeepEqual(permission.Status, "")){
+		return "Status can not be empty", nil
+	}
+
+	/*********************************************************
+		5. if Ok, submitting permission to the database
+	*********************************************************/
 	_, err := s.repository.CreatePermission(ctx, permission)
 
 	if err != nil {
@@ -46,8 +66,14 @@ func (s service) CreatePermission(ctx context.Context, permissionRequest db.Crea
 		return "", err
 	}
 
+	/*********************************************************
+		6. Logging the results
+	*********************************************************/
 	logger.Log("Create Permission", permissionRequest.PermissionName)
 
+	/*********************************************************
+		7. Returning response
+	*********************************************************/
 	return "Permission Created Succesfully", nil
 }
 

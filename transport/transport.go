@@ -11,6 +11,8 @@ import (
 	"github.com/nyelwa-senguji/ticketing_system_backend/endpoint"
 )
 
+type request struct{}
+
 func NewHTTPServer(ctx context.Context, endpoints endpoint.Endpoint) http.Handler {
 	r := mux.NewRouter()
 	r.Use(middleware)
@@ -18,6 +20,12 @@ func NewHTTPServer(ctx context.Context, endpoints endpoint.Endpoint) http.Handle
 	r.Methods("POST").Path("/permissions").Handler(transport.NewServer(
 		endpoints.CreatePermission,
 		decodePermissionReq,
+		encodeResponse,
+	))
+
+	r.Methods("GET").Path("/permissions").Handler(transport.NewServer(
+		endpoints.ListPermission,
+		decodeListPermissionReq,
 		encodeResponse,
 	))
 
@@ -37,6 +45,15 @@ func encodeResponse(ctx context.Context, w http.ResponseWriter, response interfa
 
 func decodePermissionReq(ctx context.Context, r *http.Request) (interface{}, error) {
 	var req db.CreatePermissionParams
+	err := json.NewDecoder(r.Body).Decode(&req)
+	if err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+func decodeListPermissionReq(ctx context.Context, r *http.Request) (interface{}, error) {
+	var req request
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
 		return nil, err
