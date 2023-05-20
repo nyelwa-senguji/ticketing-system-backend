@@ -20,7 +20,7 @@ func NewHTTPServer(ctx context.Context, endpoints endpoint.Endpoint) http.Handle
 
 	r.Methods("POST").Path("/permissions").Handler(transport.NewServer(
 		endpoints.CreatePermission,
-		decodePermissionReq,
+		decodeCreatePermissionReq,
 		encodeResponse,
 	))
 
@@ -33,6 +33,12 @@ func NewHTTPServer(ctx context.Context, endpoints endpoint.Endpoint) http.Handle
 	r.Methods("GET").Path("/permissions/{id}").Handler(transport.NewServer(
 		endpoints.GetPermission,
 		decodeGetPermissionReq,
+		encodeResponse,
+	))
+
+	r.Methods("PUT").Path("/permissions").Handler(transport.NewServer(
+		endpoints.UpdatePermission,
+		decodeUpdatePermissionReq,
 		encodeResponse,
 	))
 
@@ -50,8 +56,17 @@ func encodeResponse(ctx context.Context, w http.ResponseWriter, response interfa
 	return json.NewEncoder(w).Encode(response)
 }
 
-func decodePermissionReq(ctx context.Context, r *http.Request) (interface{}, error) {
+func decodeCreatePermissionReq(ctx context.Context, r *http.Request) (interface{}, error) {
 	var req service.CreatePermissionRequest
+	err := json.NewDecoder(r.Body).Decode(&req)
+	if err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+func decodeUpdatePermissionReq(ctx context.Context, r *http.Request)(interface{}, error){
+	var req service.UpdatePermissionRequest
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
 		return nil, err

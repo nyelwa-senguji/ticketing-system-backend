@@ -13,6 +13,10 @@ type (
 		Result string `json:"result"`
 	}
 
+	UpdatePermissionResponse struct {
+		Result string `json:"result"`
+	}
+
 	ListPermissionResponse struct {
 		Result      string          `json:"result"`
 		Permissions []db.Permission `json:"permissions"`
@@ -32,13 +36,15 @@ type Endpoint struct {
 	CreatePermission endpoint.Endpoint
 	ListPermission   endpoint.Endpoint
 	GetPermission    endpoint.Endpoint
+	UpdatePermission endpoint.Endpoint
 }
 
 func MakeEndpoints(s service.Service) Endpoint {
 	return Endpoint{
 		CreatePermission: makeCreatePermissionEndpoint(s),
-		ListPermission:   makeCreateListPermissionEndpoint(s),
-		GetPermission:    makeCreateGetPermission(s),
+		ListPermission:   makeListPermissionEndpoint(s),
+		GetPermission:    makeGetPermission(s),
+		UpdatePermission: makeUpdatePermission(s),
 	}
 }
 
@@ -50,17 +56,25 @@ func makeCreatePermissionEndpoint(s service.Service) endpoint.Endpoint {
 	}
 }
 
-func makeCreateListPermissionEndpoint(s service.Service) endpoint.Endpoint {
+func makeListPermissionEndpoint(s service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		ok, err := s.ListPermissions(ctx)
 		return ListPermissionResponse{Result: "Permissions fetched Successfully", Permissions: ok}, err
 	}
 }
 
-func makeCreateGetPermission(s service.Service) endpoint.Endpoint {
+func makeGetPermission(s service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(GetPermissionRequest)
 		ok, err := s.GetPermission(ctx, req.Id)
 		return GetPermissionResponse{Result: "Permission fetched Successfully", Permission: ok}, err
+	}
+}
+
+func makeUpdatePermission(s service.Service) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		req := request.(service.UpdatePermissionRequest)
+		ok, err := s.UpdatePermission(ctx, req)
+		return UpdatePermissionResponse{Result: ok}, err
 	}
 }

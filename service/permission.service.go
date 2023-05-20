@@ -14,11 +14,18 @@ type Service interface {
 	CreatePermission(ctx context.Context, createPermissionParams CreatePermissionRequest) (string, error)
 	ListPermissions(ctx context.Context) ([]db.Permission, error)
 	GetPermission(ctx context.Context, id int32) (db.Permission, error)
+	UpdatePermission(ctx context.Context, updateReq UpdatePermissionRequest) (string, error)
 }
 
 type CreatePermissionRequest struct {
 	PermissionName string `json:"permission_name"`
 	Status         string `json:"status"`
+}
+
+type UpdatePermissionRequest struct{
+	PermissionName string    `json:"permission_name"`
+	Status         string    `json:"status"`
+	ID             int32     `json:"id"`
 }
 
 type service struct {
@@ -93,4 +100,26 @@ func (s service) GetPermission(ctx context.Context, id int32) (db.Permission, er
 	}
 
 	return permission, nil
+}
+
+func (s service) UpdatePermission(ctx context.Context, updateReq UpdatePermissionRequest) (string, error) {
+	logger := log.With(s.logger, "method", "UpdatePermission")
+
+	time, _ := time.Parse("2006-01-02 15:04:05", time.Now().Format("2006-01-02 15:04:05"))
+
+	updatePermission := db.UpdatePermissionParams{
+		PermissionName: updateReq.PermissionName,
+		Status: updateReq.Status,
+		UpdatedAt: time,
+		ID: updateReq.ID,
+	}
+
+	err := s.repository.UpdatePermission(ctx, updatePermission)
+
+	if err != nil {
+		level.Error(logger).Log("err", err)
+		return "",err
+	}
+
+	return  "Permission updated successfully",nil
 }
