@@ -13,6 +13,7 @@ INSERT INTO permission (
   ?, ?, ?, ?
 );
 
--- name: DeletePermission :exec
-DELETE FROM permission
-WHERE id = ?;
+-- name: UpdatePermission :exec
+UPDATE permission
+SET permission_name=?, status=?, updated_at=?
+WHERE id=?

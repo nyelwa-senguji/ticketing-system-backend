@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	transport "github.com/go-kit/kit/transport/http"
 	"github.com/gorilla/mux"
@@ -26,6 +27,12 @@ func NewHTTPServer(ctx context.Context, endpoints endpoint.Endpoint) http.Handle
 	r.Methods("GET").Path("/permissions").Handler(transport.NewServer(
 		endpoints.ListPermission,
 		decodeListPermissionReq,
+		encodeResponse,
+	))
+
+	r.Methods("GET").Path("/permissions/{id}").Handler(transport.NewServer(
+		endpoints.GetPermission,
+		decodeGetPermissionReq,
 		encodeResponse,
 	))
 
@@ -59,4 +66,14 @@ func decodeListPermissionReq(ctx context.Context, r *http.Request) (interface{},
 		return nil, err
 	}
 	return req, nil
+}
+
+func decodeGetPermissionReq(ctx context.Context, r *http.Request) (interface{}, error) {
+	vars := mux.Vars(r)
+	i, _ := strconv.ParseInt(vars["id"], 10, 32)
+	id := int32(i)
+	request := endpoint.GetPermissionRequest{
+		Id: id,
+	}
+	return request, nil
 }

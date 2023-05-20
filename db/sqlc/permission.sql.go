@@ -35,16 +35,6 @@ func (q *Queries) CreatePermission(ctx context.Context, arg CreatePermissionPara
 	)
 }
 
-const deletePermission = `-- name: DeletePermission :exec
-DELETE FROM permission
-WHERE id = ?
-`
-
-func (q *Queries) DeletePermission(ctx context.Context, id int32) error {
-	_, err := q.db.ExecContext(ctx, deletePermission, id)
-	return err
-}
-
 const getPermission = `-- name: GetPermission :one
 SELECT id, permission_name, status, created_at, updated_at FROM permission
 WHERE id = ? LIMIT 1
@@ -95,4 +85,27 @@ func (q *Queries) ListPermissions(ctx context.Context) ([]Permission, error) {
 		return nil, err
 	}
 	return items, nil
+}
+
+const updatePermission = `-- name: UpdatePermission :exec
+UPDATE permission
+SET permission_name=?, status=?, updated_at=?
+WHERE id=?
+`
+
+type UpdatePermissionParams struct {
+	PermissionName string    `json:"permission_name"`
+	Status         string    `json:"status"`
+	UpdatedAt      time.Time `json:"updated_at"`
+	ID             int32     `json:"id"`
+}
+
+func (q *Queries) UpdatePermission(ctx context.Context, arg UpdatePermissionParams) error {
+	_, err := q.db.ExecContext(ctx, updatePermission,
+		arg.PermissionName,
+		arg.Status,
+		arg.UpdatedAt,
+		arg.ID,
+	)
+	return err
 }
