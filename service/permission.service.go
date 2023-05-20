@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"reflect"
+	"time"
 
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/log/level"
@@ -10,9 +11,14 @@ import (
 )
 
 type Service interface {
-	CreatePermission(ctx context.Context, createPermissionParams db.CreatePermissionParams) (string, error)
+	CreatePermission(ctx context.Context, createPermissionParams CreatePermissionRequest) (string, error)
 	ListPermissions(ctx context.Context) ([]db.Permission, error)
 	GetPermission(ctx context.Context, id int32) (db.Permission, error)
+}
+
+type CreatePermissionRequest struct {
+	PermissionName string `json:"permission_name"`
+	Status         string `json:"status"`
 }
 
 type service struct {
@@ -27,15 +33,17 @@ func NewService(repo *db.Repository, logger log.Logger) Service {
 	}
 }
 
-func (s service) CreatePermission(ctx context.Context, permissionRequest db.CreatePermissionParams) (string, error) {
+func (s service) CreatePermission(ctx context.Context, permissionRequest CreatePermissionRequest) (string, error) {
 
 	logger := log.With(s.logger, "method", "CreatePermission")
+
+	time, _ := time.Parse("2006-01-02 15:04:05", time.Now().Format("2006-01-02 15:04:05"))
 
 	permission := db.CreatePermissionParams{
 		PermissionName: permissionRequest.PermissionName,
 		Status:         permissionRequest.Status,
-		CreatedAt:      permissionRequest.CreatedAt,
-		UpdatedAt:      permissionRequest.UpdatedAt,
+		CreatedAt:      time,
+		UpdatedAt:      time,
 	}
 
 	if reflect.DeepEqual(permission.PermissionName, "") {

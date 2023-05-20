@@ -44,7 +44,7 @@ func MakeEndpoints(s service.Service) Endpoint {
 
 func makeCreatePermissionEndpoint(s service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-		req := request.(db.CreatePermissionParams)
+		req := request.(service.CreatePermissionRequest)
 		ok, err := s.CreatePermission(ctx, req)
 		return CreatePermissionResponse{Result: ok}, err
 	}

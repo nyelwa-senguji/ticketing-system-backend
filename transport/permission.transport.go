@@ -8,8 +8,8 @@ import (
 
 	transport "github.com/go-kit/kit/transport/http"
 	"github.com/gorilla/mux"
-	db "github.com/nyelwa-senguji/ticketing_system_backend/db/sqlc"
 	"github.com/nyelwa-senguji/ticketing_system_backend/endpoint"
+	"github.com/nyelwa-senguji/ticketing_system_backend/service"
 )
 
 type request struct{}
@@ -51,7 +51,7 @@ func encodeResponse(ctx context.Context, w http.ResponseWriter, response interfa
 }
 
 func decodePermissionReq(ctx context.Context, r *http.Request) (interface{}, error) {
-	var req db.CreatePermissionParams
+	var req service.CreatePermissionRequest
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
 		return nil, err
