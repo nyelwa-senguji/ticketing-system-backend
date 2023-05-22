@@ -4,40 +4,21 @@ import (
 	"context"
 	"reflect"
 	"time"
-
 	"github.com/go-kit/kit/log"
+
 	"github.com/go-kit/log/level"
 	db "github.com/nyelwa-senguji/ticketing_system_backend/db/sqlc"
 )
-
-type Service interface {
-	CreatePermission(ctx context.Context, createPermissionParams CreatePermissionRequest) (string, error)
-	ListPermissions(ctx context.Context) ([]db.Permission, error)
-	GetPermission(ctx context.Context, id int32) (db.Permission, error)
-	UpdatePermission(ctx context.Context, updateReq UpdatePermissionRequest) (string, error)
-}
 
 type CreatePermissionRequest struct {
 	PermissionName string `json:"permission_name"`
 	Status         string `json:"status"`
 }
 
-type UpdatePermissionRequest struct{
-	PermissionName string    `json:"permission_name"`
-	Status         string    `json:"status"`
-	ID             int32     `json:"id"`
-}
-
-type service struct {
-	repository *db.Repository
-	logger     log.Logger
-}
-
-func NewService(repo *db.Repository, logger log.Logger) Service {
-	return &service{
-		repository: repo,
-		logger:     logger,
-	}
+type UpdatePermissionRequest struct {
+	PermissionName string `json:"permission_name"`
+	Status         string `json:"status"`
+	ID             int32  `json:"id"`
 }
 
 func (s service) CreatePermission(ctx context.Context, permissionRequest CreatePermissionRequest) (string, error) {
@@ -84,6 +65,9 @@ func (s service) ListPermissions(ctx context.Context) ([]db.Permission, error) {
 		level.Error(logger).Log("err", err)
 		return nil, err
 	}
+
+	logger.Log("List All Permissions")
+
 	return permissions, nil
 }
 
@@ -99,6 +83,8 @@ func (s service) GetPermission(ctx context.Context, id int32) (db.Permission, er
 		return permission, err
 	}
 
+	logger.Log("Get Permission", permission.PermissionName)
+
 	return permission, nil
 }
 
@@ -109,17 +95,19 @@ func (s service) UpdatePermission(ctx context.Context, updateReq UpdatePermissio
 
 	updatePermission := db.UpdatePermissionParams{
 		PermissionName: updateReq.PermissionName,
-		Status: updateReq.Status,
-		UpdatedAt: time,
-		ID: updateReq.ID,
+		Status:         updateReq.Status,
+		UpdatedAt:      time,
+		ID:             updateReq.ID,
 	}
 
 	err := s.repository.UpdatePermission(ctx, updatePermission)
 
 	if err != nil {
 		level.Error(logger).Log("err", err)
-		return "",err
+		return "", err
 	}
 
-	return  "Permission updated successfully",nil
+	logger.Log("Update Permission Permission", updatePermission.PermissionName)
+
+	return "Permission updated successfully", nil
 }

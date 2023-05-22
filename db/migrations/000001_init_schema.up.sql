@@ -2,24 +2,24 @@ CREATE TABLE `roles` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `role_name` varchar(255) NOT NULL,
   `status` varchar(255) NOT NULL,
-  `created_at` timestamp NOT NULL,
-  `updated_at` timestamp NOT NULL
+  `updated_at` timestamp NOT NULL,
+  `created_at` timestamp NOT NULL
 );
 
 CREATE TABLE `permission` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `permission_name` varchar(255) NOT NULL,
   `status` varchar(255) NOT NULL,
-  `created_at` timestamp NOT NULL,
-  `updated_at` timestamp NOT NULL
+  `updated_at` timestamp NOT NULL,
+  `created_at` timestamp NOT NULL
 );
 
 CREATE TABLE `users` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `created_at` timestamp NOT NULL,
   `updated_at` timestamp NOT NULL,
+  `created_at` timestamp NOT NULL,
   `role_id` int NOT NULL
 );
 
@@ -32,8 +32,8 @@ CREATE TABLE `category` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `category_name` varchar(255) NOT NULL,
   `status` varchar(255) NOT NULL,
-  `created_at` timestamp NOT NULL,
-  `updated_at` timestamp NOT NULL
+  `updated_at` timestamp NOT NULL,
+  `created_at` timestamp NOT NULL
 );
 
 CREATE TABLE `tickets` (
@@ -41,8 +41,8 @@ CREATE TABLE `tickets` (
   `subject` varchar(255) NOT NULL,
   `description` varchar(255) NOT NULL,
   `status` varchar(255) NOT NULL,
-  `created_at` timestamp NOT NULL,
   `updated_at` timestamp NOT NULL,
+  `created_at` timestamp NOT NULL,
   `user_id` int NOT NULL,
   `category_id` int NOT NULL
 );

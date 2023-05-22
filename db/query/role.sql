@@ -13,6 +13,7 @@ INSERT INTO roles (
   ?, ?, ?, ?
 );
 
--- name: DeleteRole :exec
-DELETE FROM roles
-WHERE id = ?;
+-- name: UpdateRole :exec
+UPDATE roles
+SET role_name=?, status=?, updated_at=?
+WHERE id=?

@@ -12,16 +12,16 @@ type Category struct {
 	ID           int32     `json:"id"`
 	CategoryName string    `json:"category_name"`
 	Status       string    `json:"status"`
-	CreatedAt    time.Time `json:"created_at"`
 	UpdatedAt    time.Time `json:"updated_at"`
+	CreatedAt    time.Time `json:"created_at"`
 }
 
 type Permission struct {
 	ID             int32     `json:"id"`
 	PermissionName string    `json:"permission_name"`
 	Status         string    `json:"status"`
-	CreatedAt      time.Time `json:"created_at"`
 	UpdatedAt      time.Time `json:"updated_at"`
+	CreatedAt      time.Time `json:"created_at"`
 }
 
 type PermissionRoles struct {
@@ -33,8 +33,8 @@ type Roles struct {
 	ID        int32     `json:"id"`
 	RoleName  string    `json:"role_name"`
 	Status    string    `json:"status"`
-	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
+	CreatedAt time.Time `json:"created_at"`
 }
 
 type Tickets struct {
@@ -42,8 +42,8 @@ type Tickets struct {
 	Subject     string    `json:"subject"`
 	Description string    `json:"description"`
 	Status      string    `json:"status"`
-	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
+	CreatedAt   time.Time `json:"created_at"`
 	UserID      int32     `json:"user_id"`
 	CategoryID  int32     `json:"category_id"`
 }
@@ -52,7 +52,7 @@ type Users struct {
 	ID        int32     `json:"id"`
 	Username  string    `json:"username"`
 	Password  string    `json:"password"`
-	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
+	CreatedAt time.Time `json:"created_at"`
 	RoleID    int32     `json:"role_id"`
 }

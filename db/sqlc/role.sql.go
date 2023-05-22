@@ -35,18 +35,8 @@ func (q *Queries) CreateRole(ctx context.Context, arg CreateRoleParams) (sql.Res
 	)
 }
 
-const deleteRole = `-- name: DeleteRole :exec
-DELETE FROM roles
-WHERE id = ?
-`
-
-func (q *Queries) DeleteRole(ctx context.Context, id int32) error {
-	_, err := q.db.ExecContext(ctx, deleteRole, id)
-	return err
-}
-
 const getRole = `-- name: GetRole :one
-SELECT id, role_name, status, created_at, updated_at FROM roles
+SELECT id, role_name, status, updated_at, created_at FROM roles
 WHERE id = ? LIMIT 1
 `
 
@@ -57,14 +47,14 @@ func (q *Queries) GetRole(ctx context.Context, id int32) (Roles, error) {
 		&i.ID,
 		&i.RoleName,
 		&i.Status,
-		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.CreatedAt,
 	)
 	return i, err
 }
 
 const listRoles = `-- name: ListRoles :many
-SELECT id, role_name, status, created_at, updated_at FROM roles
+SELECT id, role_name, status, updated_at, created_at FROM roles
 ORDER BY role_name
 `
 
@@ -81,8 +71,8 @@ func (q *Queries) ListRoles(ctx context.Context) ([]Roles, error) {
 			&i.ID,
 			&i.RoleName,
 			&i.Status,
-			&i.CreatedAt,
 			&i.UpdatedAt,
+			&i.CreatedAt,
 		); err != nil {
 			return nil, err
 		}
@@ -95,4 +85,27 @@ func (q *Queries) ListRoles(ctx context.Context) ([]Roles, error) {
 		return nil, err
 	}
 	return items, nil
+}
+
+const updateRole = `-- name: UpdateRole :exec
+UPDATE roles
+SET role_name=?, status=?, updated_at=?
+WHERE id=?
+`
+
+type UpdateRoleParams struct {
+	RoleName  string    `json:"role_name"`
+	Status    string    `json:"status"`
+	UpdatedAt time.Time `json:"updated_at"`
+	ID        int32     `json:"id"`
+}
+
+func (q *Queries) UpdateRole(ctx context.Context, arg UpdateRoleParams) error {
+	_, err := q.db.ExecContext(ctx, updateRole,
+		arg.RoleName,
+		arg.Status,
+		arg.UpdatedAt,
+		arg.ID,
+	)
+	return err
 }

@@ -36,7 +36,7 @@ func (q *Queries) CreatePermission(ctx context.Context, arg CreatePermissionPara
 }
 
 const getPermission = `-- name: GetPermission :one
-SELECT id, permission_name, status, created_at, updated_at FROM permission
+SELECT id, permission_name, status, updated_at, created_at FROM permission
 WHERE id = ? LIMIT 1
 `
 
@@ -47,14 +47,14 @@ func (q *Queries) GetPermission(ctx context.Context, id int32) (Permission, erro
 		&i.ID,
 		&i.PermissionName,
 		&i.Status,
-		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.CreatedAt,
 	)
 	return i, err
 }
 
 const listPermissions = `-- name: ListPermissions :many
-SELECT id, permission_name, status, created_at, updated_at FROM permission
+SELECT id, permission_name, status, updated_at, created_at FROM permission
 ORDER BY permission_name
 `
 
@@ -71,8 +71,8 @@ func (q *Queries) ListPermissions(ctx context.Context) ([]Permission, error) {
 			&i.ID,
 			&i.PermissionName,
 			&i.Status,
-			&i.CreatedAt,
 			&i.UpdatedAt,
+			&i.CreatedAt,
 		); err != nil {
 			return nil, err
 		}
