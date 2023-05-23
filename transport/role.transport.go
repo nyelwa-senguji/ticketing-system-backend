@@ -11,8 +11,8 @@ import (
 	"github.com/nyelwa-senguji/ticketing_system_backend/service"
 )
 
-func decodeCreatePermissionReq(ctx context.Context, r *http.Request) (interface{}, error) {
-	var req service.CreatePermissionRequest
+func decodeCreateRoleReq(ctx context.Context, r *http.Request) (interface{}, error) {
+	var req service.CreateRoleRequest
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
 		return nil, err
@@ -20,8 +20,8 @@ func decodeCreatePermissionReq(ctx context.Context, r *http.Request) (interface{
 	return req, nil
 }
 
-func decodeUpdatePermissionReq(ctx context.Context, r *http.Request) (interface{}, error) {
-	var req service.UpdatePermissionRequest
+func decodeUpdateRoleReq(ctx context.Context, r *http.Request) (interface{}, error) {
+	var req service.UpdateRoleRequest
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
 		return nil, err
@@ -29,7 +29,7 @@ func decodeUpdatePermissionReq(ctx context.Context, r *http.Request) (interface{
 	return req, nil
 }
 
-func decodeListPermissionReq(ctx context.Context, r *http.Request) (interface{}, error) {
+func decodeListRolesReq(ctx context.Context, r *http.Request) (interface{}, error) {
 	var req request
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
@@ -38,11 +38,11 @@ func decodeListPermissionReq(ctx context.Context, r *http.Request) (interface{},
 	return req, nil
 }
 
-func decodeGetPermissionReq(ctx context.Context, r *http.Request) (interface{}, error) {
+func decodeGetRoleReq(ctx context.Context, r *http.Request) (interface{}, error) {
 	vars := mux.Vars(r)
 	i, _ := strconv.ParseInt(vars["id"], 10, 32)
 	id := int32(i)
-	request := endpoint.GetPermissionRequest{
+	request := endpoint.GetRoleRequest{
 		Id: id,
 	}
 	return request, nil

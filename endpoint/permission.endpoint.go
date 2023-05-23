@@ -27,26 +27,10 @@ type (
 	}
 
 	GetPermissionResponse struct {
-		Result string `json:"result"`
+		Result     string        `json:"result"`
 		Permission db.Permission `json:"permission"`
 	}
 )
-
-type Endpoint struct {
-	CreatePermission endpoint.Endpoint
-	ListPermission   endpoint.Endpoint
-	GetPermission    endpoint.Endpoint
-	UpdatePermission endpoint.Endpoint
-}
-
-func MakeEndpoints(s service.Service) Endpoint {
-	return Endpoint{
-		CreatePermission: makeCreatePermissionEndpoint(s),
-		ListPermission:   makeListPermissionEndpoint(s),
-		GetPermission:    makeGetPermission(s),
-		UpdatePermission: makeUpdatePermission(s),
-	}
-}
 
 func makeCreatePermissionEndpoint(s service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
@@ -63,7 +47,7 @@ func makeListPermissionEndpoint(s service.Service) endpoint.Endpoint {
 	}
 }
 
-func makeGetPermission(s service.Service) endpoint.Endpoint {
+func makeGetPermissionEndpoint(s service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(GetPermissionRequest)
 		ok, err := s.GetPermission(ctx, req.Id)
@@ -71,7 +55,7 @@ func makeGetPermission(s service.Service) endpoint.Endpoint {
 	}
 }
 
-func makeUpdatePermission(s service.Service) endpoint.Endpoint {
+func makeUpdatePermissionEndpoint(s service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(service.UpdatePermissionRequest)
 		ok, err := s.UpdatePermission(ctx, req)
