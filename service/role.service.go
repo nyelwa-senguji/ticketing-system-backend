@@ -23,7 +23,7 @@ type UpdateRoleRequest struct {
 
 func (s service) CreateRole(ctx context.Context, createRoleReq CreateRoleRequest) (string, error) {
 
-	logger := log.With(s.logger, "method", "CreatePermission")
+	logger := log.With(s.logger, "method", "CreateRole")
 
 	time, _ := time.Parse("2006-01-02 15:04:05", time.Now().Format("2006-01-02 15:04:05"))
 
@@ -49,19 +49,65 @@ func (s service) CreateRole(ctx context.Context, createRoleReq CreateRoleRequest
 		return "", err
 	}
 
-	logger.Log("Create Permission", role.RoleName)
+	logger.Log("Create Role", role.RoleName)
 
 	return "Role Created Successfully", nil
 }
 
 func (s service) ListRoles(ctx context.Context) ([]db.Roles, error) {
-	return nil, nil
+	logger := log.With(s.logger, "method", "ListRoles")
+
+	var roles []db.Roles
+
+	roles, err := s.repository.ListRoles(ctx)
+
+	if err != nil {
+		level.Error(logger).Log("err", err)
+		return nil, err
+	}
+
+	logger.Log("List All Roles")
+
+	return roles, nil
 }
 
 func (s service) GetRole(ctx context.Context, id int32) (db.Roles, error) {
-	return db.Roles{}, nil
+	logger := log.With(s.logger, "method", "GetRole")
+
+	var role db.Roles
+
+	role, err := s.repository.GetRole(ctx, id)
+
+	if err != nil {
+		level.Error(logger).Log("err", err)
+		return role, err
+	}
+
+	logger.Log("Get Role", role.RoleName)
+
+	return role, nil
 }
 
 func (s service) UpdateRole(ctx context.Context, updateRoleReq UpdateRoleRequest) (string, error) {
-	return "", nil
+	logger := log.With(s.logger, "method", "UpdatePermission")
+
+	time, _ := time.Parse("2006-01-02 15:04:05", time.Now().Format("2006-01-02 15:04:05"))
+
+	updateRole := db.UpdateRoleParams{
+		RoleName: updateRoleReq.RoleName,
+		Status: updateRoleReq.Status,
+		UpdatedAt: time,
+		ID: updateRoleReq.ID,
+	}
+
+	err := s.repository.UpdateRole(ctx, updateRole)
+
+	if err != nil {
+		level.Error(logger).Log("err", err)
+		return "", err
+	}
+
+	logger.Log("Update Role", updateRole.RoleName)
+
+	return "Role Updated Successfully", nil
 }

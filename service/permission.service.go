@@ -107,7 +107,7 @@ func (s service) UpdatePermission(ctx context.Context, updateReq UpdatePermissio
 		return "", err
 	}
 
-	logger.Log("Update Permission Permission", updatePermission.PermissionName)
+	logger.Log("Update Permission", updatePermission.PermissionName)
 
 	return "Permission updated successfully", nil
 }
