@@ -19,6 +19,10 @@ type Service interface {
 	/******************************
 		Services for Roles
 	*******************************/
+	CreateRole(ctx context.Context, createRoleReq CreateRoleRequest) (string, error)
+	ListRoles(ctx context.Context) ([]db.Roles, error)
+	GetRole(ctx context.Context, id int32) (db.Roles, error)
+	UpdateRole(ctx context.Context, updateRoleReq UpdateRoleRequest)(string, error)
 }
 
 type service struct {

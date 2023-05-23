@@ -39,7 +39,7 @@ func (s service) CreatePermission(ctx context.Context, permissionRequest CreateP
 	}
 
 	if reflect.DeepEqual(permission.Status, "") {
-		return "Status can not be empty", nil
+		return "Permisison status can not be empty", nil
 	}
 
 	_, err := s.repository.CreatePermission(ctx, permission)
@@ -49,7 +49,7 @@ func (s service) CreatePermission(ctx context.Context, permissionRequest CreateP
 		return "", err
 	}
 
-	logger.Log("Create Permission", permissionRequest.PermissionName)
+	logger.Log("Create Permission", permission.PermissionName)
 
 	return "Permission Created Succesfully", nil
 }
