@@ -30,7 +30,7 @@ func MakeEndpoints(s service.Service) Endpoint {
 		GetPermission:    makeGetPermissionEndpoint(s),
 		UpdatePermission: makeUpdatePermissionEndpoint(s),
 
-		CreateRole: makeCreatePermissionEndpoint(s),
+		CreateRole: makeCreateRoleEndpoint(s),
 		ListRoles: makeListRolesEndpoint(s),
 		GetRole: makeGetRoleEndpoint(s),
 		UpdateRole: makeUpdateRoleEndpoint(s),
