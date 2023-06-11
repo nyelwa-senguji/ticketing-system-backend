@@ -69,6 +69,15 @@ func NewHTTPServer(ctx context.Context, endpoints endpoint.Endpoint) http.Handle
 		encodeResponse,
 	))
 
+	/*****************************************************************
+		Users transport layer
+	******************************************************************/
+	r.Methods("POST").Path("/users").Handler(transport.NewServer(
+		endpoints.CreateUser,
+		decodeCreateUserReq,
+		encodeResponse,
+	))
+
 	return r
 }
 

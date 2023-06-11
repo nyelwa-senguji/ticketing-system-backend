@@ -11,7 +11,6 @@ import (
 	"syscall"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/joho/godotenv"
 
 	"github.com/go-kit/log"
 	"github.com/go-kit/log/level"
@@ -19,18 +18,14 @@ import (
 	"github.com/nyelwa-senguji/ticketing_system_backend/endpoint"
 	"github.com/nyelwa-senguji/ticketing_system_backend/service"
 	httptransport "github.com/nyelwa-senguji/ticketing_system_backend/transport"
+	"github.com/nyelwa-senguji/ticketing_system_backend/utils"
 )
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		panic(".env file is missing")
-	}
-
-	dbUsername := os.Getenv("DB_USER")
-	dbPassword := os.Getenv("DB_PASSWORD")
-	dbPort := os.Getenv("DB_PORT")
-	dbName := os.Getenv("DB_NAME")
+	dbUsername := utils.LoadEnviromentalVariables("DB_USER")
+	dbPassword := utils.LoadEnviromentalVariables("DB_PASSWORD")
+	dbPort := utils.LoadEnviromentalVariables("DB_PORT")
+	dbName := utils.LoadEnviromentalVariables("DB_NAME")
 
 	dbsource := dbUsername + ":" + dbPassword + "@tcp(localhost:" + dbPort + ")/" + dbName + "?parseTime=true"
 
