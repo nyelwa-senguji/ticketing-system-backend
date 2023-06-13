@@ -41,5 +41,6 @@ func MakeEndpoints(s service.Service) Endpoint {
 		UpdateRole: makeUpdateRoleEndpoint(s),
 
 		CreateUser: makeCreateUserEndpoint(s),
+
 	}
 }
