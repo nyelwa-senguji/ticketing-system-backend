@@ -6,6 +6,9 @@ CREATE TABLE `roles` (
   `created_at` timestamp NOT NULL
 );
 
+INSERT INTO `roles`(`id`, `role_name`, `status`, `updated_at`, `created_at`) VALUES 
+(1, 'Super User', 'active', NOW(), NOW());
+
 CREATE TABLE `permission` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `permission_name` varchar(255) NOT NULL,
@@ -22,6 +25,9 @@ CREATE TABLE `users` (
   `created_at` timestamp NOT NULL,
   `role_id` int NOT NULL
 );
+
+INSERT INTO `users` (`id`, `username`, `password`, `updated_at`, `created_at`, `role_id`) VALUES 
+(1, 'System Administrator', 'system@admin', NOW(), NOW(), 1);
 
 CREATE TABLE `permission_roles` (
   `permission_id` int NOT NULL,
