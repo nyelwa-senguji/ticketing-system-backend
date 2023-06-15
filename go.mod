@@ -9,6 +9,8 @@ require (
 
 require github.com/joho/godotenv v1.5.1
 
+require github.com/golang-jwt/jwt/v5 v5.0.0 
+
 require (
 	github.com/go-logfmt/logfmt v0.5.1 // indirect
 	github.com/go-sql-driver/mysql v1.7.1

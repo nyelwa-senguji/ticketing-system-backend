@@ -78,6 +78,12 @@ func NewHTTPServer(ctx context.Context, endpoints endpoint.Endpoint) http.Handle
 		encodeResponse,
 	))
 
+	r.Methods("POST").Path("/login").Handler(transport.NewServer(
+		endpoints.LoginUser,
+		decodeLoginUserReq,
+		encodeResponse,
+	))
+
 	return r
 }
 
