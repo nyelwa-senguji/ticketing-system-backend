@@ -1,6 +1,9 @@
 package utils
 
 import (
+	"context"
+	"encoding/json"
+	"net/http"
 	"os"
 	"time"
 
@@ -27,4 +30,8 @@ func GenerateJWTToken(id string) string {
 		return "Could not login"
 	}
 	return token
+}
+
+func EncodeResponse(ctx context.Context, w http.ResponseWriter, response interface{}) error {
+	return json.NewEncoder(w).Encode(response)
 }
