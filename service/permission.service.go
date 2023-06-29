@@ -2,8 +2,8 @@ package service
 
 import (
 	"context"
-	"reflect"
 	"time"
+
 	"github.com/go-kit/kit/log"
 
 	"github.com/go-kit/log/level"
@@ -32,14 +32,6 @@ func (s service) CreatePermission(ctx context.Context, permissionRequest CreateP
 		Status:         permissionRequest.Status,
 		CreatedAt:      time,
 		UpdatedAt:      time,
-	}
-
-	if reflect.DeepEqual(permission.PermissionName, "") {
-		return "Permission name can not be empty", nil
-	}
-
-	if reflect.DeepEqual(permission.Status, "") {
-		return "Permisison status can not be empty", nil
 	}
 
 	_, err := s.repository.CreatePermission(ctx, permission)

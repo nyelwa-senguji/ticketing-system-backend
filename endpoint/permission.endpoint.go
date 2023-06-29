@@ -2,15 +2,19 @@ package endpoint
 
 import (
 	"context"
+	"reflect"
 
 	"github.com/go-kit/kit/endpoint"
 	db "github.com/nyelwa-senguji/ticketing_system_backend/db/sqlc"
 	"github.com/nyelwa-senguji/ticketing_system_backend/service"
+	"github.com/nyelwa-senguji/ticketing_system_backend/utils"
 )
 
 type (
 	CreatePermissionResponse struct {
-		Result string `json:"result"`
+		Status  int    `json:"status"`
+		Success bool   `json:"success"`
+		Message string `json:"message"`
 	}
 
 	UpdatePermissionResponse struct {
@@ -34,9 +38,23 @@ type (
 
 func makeCreatePermissionEndpoint(s service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+
 		req := request.(service.CreatePermissionRequest)
+
+		if reflect.DeepEqual(req.PermissionName, "") {
+			return CreatePermissionResponse{Status: utils.StatusBadRequest, Success: false, Message: "Permission name can not be empty"}, nil
+		}
+
+		if reflect.DeepEqual(req.Status, "") {
+			return CreatePermissionResponse{Status: utils.StatusBadRequest, Success: false, Message: "Permisison status can not be empty"}, nil
+		}
+
 		ok, err := s.CreatePermission(ctx, req)
-		return CreatePermissionResponse{Result: ok}, err
+		if err != nil {
+			return CreatePermissionResponse{Status: utils.StatusInternalServerError, Success: false, Message: ok}, err
+		}
+		
+		return CreatePermissionResponse{Status: utils.StatusOK, Success: true, Message: ok}, err
 	}
 }
 

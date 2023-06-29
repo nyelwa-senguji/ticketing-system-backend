@@ -90,25 +90,3 @@ func (q *Queries) ListUsers(ctx context.Context) ([]Users, error) {
 	}
 	return items, nil
 }
-
-const loginUser = `-- name: LoginUser :one
-SELECT id, role_id FROM users
-WHERE username = ? and password = ?
-`
-
-type LoginUserParams struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
-}
-
-type LoginUserRow struct {
-	ID     int32 `json:"id"`
-	RoleID int32 `json:"role_id"`
-}
-
-func (q *Queries) LoginUser(ctx context.Context, arg LoginUserParams) (LoginUserRow, error) {
-	row := q.db.QueryRowContext(ctx, loginUser, arg.Username, arg.Password)
-	var i LoginUserRow
-	err := row.Scan(&i.ID, &i.RoleID)
-	return i, err
-}

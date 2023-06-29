@@ -78,6 +78,9 @@ func NewHTTPServer(ctx context.Context, endpoints endpoint.Endpoint) http.Handle
 		utils.EncodeResponse,
 	))
 
+	/*****************************************************************
+		Authentication transport layer
+	******************************************************************/
 	r.Methods("POST").Path("/login").Handler(transport.NewServer(
 		endpoints.LoginUser,
 		decodeLoginUserReq,
@@ -91,9 +94,8 @@ type request struct{}
 
 func middleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Add("Access-Control-Allow-Origin", "*")
 		w.Header().Add("Content-Type", "application/json")
 		next.ServeHTTP(w, r)
 	})
 }
-
-
