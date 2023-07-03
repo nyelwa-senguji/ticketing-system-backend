@@ -6,6 +6,8 @@ import (
 	"github.com/go-kit/kit/log"
 
 	db "github.com/nyelwa-senguji/ticketing_system_backend/db/sqlc"
+	"github.com/nyelwa-senguji/ticketing_system_backend/token"
+	"github.com/nyelwa-senguji/ticketing_system_backend/utils"
 )
 
 type Service interface {
@@ -35,11 +37,14 @@ type Service interface {
 type service struct {
 	repository *db.Repository
 	logger     log.Logger
+	tokenMaker token.Maker
 }
 
 func NewService(repo *db.Repository, logger log.Logger) Service {
+	tokenMaker, _ := token.NewPasetoMaker(utils.LoadEnviromentalVariables("SECRET_KEY"))
 	return &service{
 		repository: repo,
 		logger:     logger,
+		tokenMaker: tokenMaker,
 	}
 }

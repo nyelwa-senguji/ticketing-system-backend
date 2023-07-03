@@ -7,12 +7,22 @@ import (
 	transport "github.com/go-kit/kit/transport/http"
 	"github.com/gorilla/mux"
 	"github.com/nyelwa-senguji/ticketing_system_backend/endpoint"
+	"github.com/nyelwa-senguji/ticketing_system_backend/middleware"
 	"github.com/nyelwa-senguji/ticketing_system_backend/utils"
 )
 
 func NewHTTPServer(ctx context.Context, endpoints endpoint.Endpoint) http.Handler {
 	r := mux.NewRouter()
-	r.Use(middleware)
+	r.Use(middleware.Middleware)
+
+	/*****************************************************************
+		Authentication transport layer
+	******************************************************************/
+	r.Methods("POST").Path("/login").Handler(transport.NewServer(
+		endpoints.LoginUser,
+		decodeLoginUserReq,
+		utils.EncodeResponse,
+	))
 
 	/*****************************************************************
 		Permissions transport layer
@@ -78,24 +88,7 @@ func NewHTTPServer(ctx context.Context, endpoints endpoint.Endpoint) http.Handle
 		utils.EncodeResponse,
 	))
 
-	/*****************************************************************
-		Authentication transport layer
-	******************************************************************/
-	r.Methods("POST").Path("/login").Handler(transport.NewServer(
-		endpoints.LoginUser,
-		decodeLoginUserReq,
-		utils.EncodeResponse,
-	))
-
 	return r
 }
 
 type request struct{}
-
-func middleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Add("Access-Control-Allow-Origin", "*")
-		w.Header().Add("Content-Type", "application/json")
-		next.ServeHTTP(w, r)
-	})
-}
