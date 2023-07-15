@@ -10,13 +10,29 @@ import (
 	"github.com/nyelwa-senguji/ticketing_system_backend/utils"
 )
 
+type Middleware interface {
+	HeaderMiddleware(next http.Handler) http.Handler
+	AuthenticationMiddleware(next http.Handler) http.Handler
+}
+
+type middleware struct {
+	tokenMaker token.Maker
+}
+
+func NewMiddleware() Middleware {
+	tokenMaker, _ := token.NewPasetoMaker(utils.LoadEnviromentalVariables("SECRET_KEY"))
+	return &middleware{
+		tokenMaker: tokenMaker,
+	}
+}
+
 const (
 	authorizationHeaderKey  = "authorization"
 	auhtorizationTypeBearer = "bearer"
 	authorizationPayloadKey = "authorization_payload"
 )
 
-func Middleware(next http.Handler) http.Handler {
+func (m middleware) HeaderMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add("Access-Control-Allow-Origin", "*")
 		w.Header().Add("Content-Type", "application/json")
@@ -24,7 +40,7 @@ func Middleware(next http.Handler) http.Handler {
 	})
 }
 
-func AuthMiddleware(tokenMaker token.Maker, next http.Handler) http.Handler {
+func (m middleware) AuthenticationMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authorizationHeader := r.Header.Get(authorizationHeaderKey)
 		if len(authorizationHeader) == 0 {
@@ -48,7 +64,7 @@ func AuthMiddleware(tokenMaker token.Maker, next http.Handler) http.Handler {
 		}
 
 		accessToken := fields[1]
-		payload, err := tokenMaker.VerifyToken(accessToken)
+		payload, err := m.tokenMaker.VerifyToken(accessToken)
 		if err != nil {
 			utils.WriteJSON(w, http.StatusUnauthorized, err)
 			return

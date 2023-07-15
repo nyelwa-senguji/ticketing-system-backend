@@ -13,8 +13,11 @@ import (
 
 func NewHTTPServer(ctx context.Context, endpoints endpoint.Endpoint) http.Handler {
 	r := mux.NewRouter()
-	r.Use(middleware.Middleware)
+	r.Use(middleware.NewMiddleware().HeaderMiddleware)
 
+	a := r.PathPrefix("/").Subrouter()
+	a.Use(middleware.NewMiddleware().AuthenticationMiddleware)
+	
 	/*****************************************************************
 		Authentication transport layer
 	******************************************************************/
@@ -27,25 +30,25 @@ func NewHTTPServer(ctx context.Context, endpoints endpoint.Endpoint) http.Handle
 	/*****************************************************************
 		Permissions transport layer
 	******************************************************************/
-	r.Methods("POST").Path("/permissions").Handler(transport.NewServer(
+	a.Methods("POST").Path("/permissions").Handler(transport.NewServer(
 		endpoints.CreatePermission,
 		decodeCreatePermissionReq,
 		utils.EncodeResponse,
 	))
 
-	r.Methods("GET").Path("/permissions").Handler(transport.NewServer(
+	a.Methods("GET").Path("/permissions").Handler(transport.NewServer(
 		endpoints.ListPermission,
 		decodeListPermissionReq,
 		utils.EncodeResponse,
 	))
 
-	r.Methods("GET").Path("/permissions/{id}").Handler(transport.NewServer(
+	a.Methods("GET").Path("/permissions/{id}").Handler(transport.NewServer(
 		endpoints.GetPermission,
 		decodeGetPermissionReq,
 		utils.EncodeResponse,
 	))
 
-	r.Methods("PUT").Path("/permissions").Handler(transport.NewServer(
+	a.Methods("PUT").Path("/permissions").Handler(transport.NewServer(
 		endpoints.UpdatePermission,
 		decodeUpdatePermissionReq,
 		utils.EncodeResponse,
@@ -55,25 +58,25 @@ func NewHTTPServer(ctx context.Context, endpoints endpoint.Endpoint) http.Handle
 		Roles transport layer
 	******************************************************************/
 
-	r.Methods("POST").Path("/roles").Handler(transport.NewServer(
+	a.Methods("POST").Path("/roles").Handler(transport.NewServer(
 		endpoints.CreateRole,
 		decodeCreateRoleReq,
 		utils.EncodeResponse,
 	))
 
-	r.Methods("GET").Path("/roles").Handler(transport.NewServer(
+	a.Methods("GET").Path("/roles").Handler(transport.NewServer(
 		endpoints.ListRoles,
 		decodeListRolesReq,
 		utils.EncodeResponse,
 	))
 
-	r.Methods("GET").Path("/roles/{id}").Handler(transport.NewServer(
+	a.Methods("GET").Path("/roles/{id}").Handler(transport.NewServer(
 		endpoints.GetRole,
 		decodeGetRoleReq,
 		utils.EncodeResponse,
 	))
 
-	r.Methods("PUT").Path("/roles").Handler(transport.NewServer(
+	a.Methods("PUT").Path("/roles").Handler(transport.NewServer(
 		endpoints.UpdateRole,
 		decodeUpdateRoleReq,
 		utils.EncodeResponse,
@@ -82,7 +85,7 @@ func NewHTTPServer(ctx context.Context, endpoints endpoint.Endpoint) http.Handle
 	/*****************************************************************
 		Users transport layer
 	******************************************************************/
-	r.Methods("POST").Path("/users").Handler(transport.NewServer(
+	a.Methods("POST").Path("/users").Handler(transport.NewServer(
 		endpoints.CreateUser,
 		decodeCreateUserReq,
 		utils.EncodeResponse,

@@ -18,11 +18,14 @@ type (
 	}
 
 	UpdatePermissionResponse struct {
-		Result string `json:"result"`
+		Status  int    `json:"status"`
+		Success bool   `json:"success"`
+		Message string `json:"message"`
 	}
 
 	ListPermissionResponse struct {
-		Result      string          `json:"result"`
+		Status      int             `json:"status"`
+		Message     string          `json:"message"`
 		Permissions []db.Permission `json:"permissions"`
 	}
 
@@ -31,7 +34,8 @@ type (
 	}
 
 	GetPermissionResponse struct {
-		Result     string        `json:"result"`
+		Status     int           `json:"status"`
+		Message    string        `json:"message"`
 		Permission db.Permission `json:"permission"`
 	}
 )
@@ -53,7 +57,7 @@ func makeCreatePermissionEndpoint(s service.Service) endpoint.Endpoint {
 		if err != nil {
 			return CreatePermissionResponse{Status: utils.StatusInternalServerError, Success: false, Message: ok}, err
 		}
-		
+
 		return CreatePermissionResponse{Status: utils.StatusOK, Success: true, Message: ok}, err
 	}
 }
@@ -61,7 +65,7 @@ func makeCreatePermissionEndpoint(s service.Service) endpoint.Endpoint {
 func makeListPermissionEndpoint(s service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		ok, err := s.ListPermissions(ctx)
-		return ListPermissionResponse{Result: "Permissions fetched Successfully", Permissions: ok}, err
+		return ListPermissionResponse{Status: utils.StatusOK, Message: "Permissions fetched Successfully", Permissions: ok}, err
 	}
 }
 
@@ -69,7 +73,7 @@ func makeGetPermissionEndpoint(s service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(GetPermissionRequest)
 		ok, err := s.GetPermission(ctx, req.Id)
-		return GetPermissionResponse{Result: "Permission fetched Successfully", Permission: ok}, err
+		return GetPermissionResponse{Status: utils.StatusOK, Message: "Permission fetched Successfully", Permission: ok}, err
 	}
 }
 
@@ -77,6 +81,6 @@ func makeUpdatePermissionEndpoint(s service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(service.UpdatePermissionRequest)
 		ok, err := s.UpdatePermission(ctx, req)
-		return UpdatePermissionResponse{Result: ok}, err
+		return UpdatePermissionResponse{Status: utils.StatusOK, Success: true, Message: ok}, err
 	}
 }
