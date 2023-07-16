@@ -2,6 +2,10 @@
 SELECT * FROM roles
 WHERE id = ? LIMIT 1;
 
+-- name: GetRoleByName :one
+SELECT * FROM roles
+WHERE role_name = ? LIMIT 1;
+
 -- name: ListRoles :many
 SELECT * FROM roles
 ORDER BY role_name;

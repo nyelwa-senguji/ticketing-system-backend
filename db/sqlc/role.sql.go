@@ -53,6 +53,24 @@ func (q *Queries) GetRole(ctx context.Context, id int32) (Roles, error) {
 	return i, err
 }
 
+const getRoleByName = `-- name: GetRoleByName :one
+SELECT id, role_name, status, updated_at, created_at FROM roles
+WHERE role_name = ? LIMIT 1
+`
+
+func (q *Queries) GetRoleByName(ctx context.Context, roleName string) (Roles, error) {
+	row := q.db.QueryRowContext(ctx, getRoleByName, roleName)
+	var i Roles
+	err := row.Scan(
+		&i.ID,
+		&i.RoleName,
+		&i.Status,
+		&i.UpdatedAt,
+		&i.CreatedAt,
+	)
+	return i, err
+}
+
 const listRoles = `-- name: ListRoles :many
 SELECT id, role_name, status, updated_at, created_at FROM roles
 ORDER BY role_name

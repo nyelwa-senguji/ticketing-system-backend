@@ -55,7 +55,7 @@ func makeCreatePermissionEndpoint(s service.Service) endpoint.Endpoint {
 
 		ok, err := s.CreatePermission(ctx, req)
 		if err != nil {
-			return CreatePermissionResponse{Status: utils.StatusInternalServerError, Success: false, Message: ok}, err
+			return CreatePermissionResponse{Status: utils.StatusInternalServerError, Success: false, Message: err.Error()}, nil
 		}
 
 		return CreatePermissionResponse{Status: utils.StatusOK, Success: true, Message: ok}, err
