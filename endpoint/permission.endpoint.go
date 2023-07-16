@@ -73,6 +73,9 @@ func makeGetPermissionEndpoint(s service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(GetPermissionRequest)
 		ok, err := s.GetPermission(ctx, req.Id)
+		if err != nil {
+			return GetPermissionResponse{Status: utils.StatusBadRequest, Message: err.Error(), Permission: ok}, nil
+		}
 		return GetPermissionResponse{Status: utils.StatusOK, Message: "Permission fetched Successfully", Permission: ok}, err
 	}
 }

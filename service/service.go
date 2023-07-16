@@ -31,7 +31,11 @@ type Service interface {
 		Services for Users
 	*******************************/
 	CreateUser(ctx context.Context, createUserRequest CreateUserRequest) (string, error)
-	LoginUser(ctx context.Context, loginUserReq db.LoginUserParams) (string, error)
+
+	/******************************
+		Services for Authentication
+	*******************************/
+	LoginUser(ctx context.Context, loginUserReq db.LoginUserParams) (*LoggedInUserResponse, string, error)
 }
 
 type service struct {

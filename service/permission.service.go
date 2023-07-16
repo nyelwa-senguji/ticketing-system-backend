@@ -25,6 +25,12 @@ func (s service) CreatePermission(ctx context.Context, permissionRequest CreateP
 
 	logger := log.With(s.logger, "method", "CreatePermission")
 
+	checkIfPermissionExists, _ := s.repository.GetPermissionByName(ctx, permissionRequest.PermissionName)
+
+	if(checkIfPermissionExists.PermissionName == permissionRequest.PermissionName){
+		return "Permission already exists", nil
+	}
+
 	time, _ := time.Parse("2006-01-02 15:04:05", time.Now().Format("2006-01-02 15:04:05"))
 
 	permission := db.CreatePermissionParams{

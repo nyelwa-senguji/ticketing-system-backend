@@ -2,6 +2,10 @@
 SELECT * FROM permission
 WHERE id = ? LIMIT 1;
 
+-- name: GetPermissionByName :one
+SELECT * FROM permission
+WHERE permission_name = ? LIMIT 1;
+
 -- name: ListPermissions :many
 SELECT * FROM permission
 ORDER BY permission_name;
