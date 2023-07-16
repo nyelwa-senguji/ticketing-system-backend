@@ -26,10 +26,10 @@ func (s service) CreateRole(ctx context.Context, createRoleReq CreateRoleRequest
 
 	checkIfRoleExists, _ := s.repository.GetRoleByName(ctx, createRoleReq.RoleName)
 
-	if (checkIfRoleExists.RoleName == createRoleReq.RoleName){
+	if checkIfRoleExists.RoleName == createRoleReq.RoleName {
 		return "Role already exists", nil
 	}
-	
+
 	time, _ := time.Parse("2006-01-02 15:04:05", time.Now().Format("2006-01-02 15:04:05"))
 
 	role := db.CreateRoleParams{
@@ -54,8 +54,6 @@ func (s service) CreateRole(ctx context.Context, createRoleReq CreateRoleRequest
 func (s service) ListRoles(ctx context.Context) ([]db.Roles, error) {
 	logger := log.With(s.logger, "method", "ListRoles")
 
-	var roles []db.Roles
-
 	roles, err := s.repository.ListRoles(ctx)
 
 	if err != nil {
@@ -70,8 +68,6 @@ func (s service) ListRoles(ctx context.Context) ([]db.Roles, error) {
 
 func (s service) GetRole(ctx context.Context, id int32) (db.Roles, error) {
 	logger := log.With(s.logger, "method", "GetRole")
-
-	var role db.Roles
 
 	role, err := s.repository.GetRole(ctx, id)
 

@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"reflect"
 	"time"
 
 	"github.com/go-kit/kit/log"
@@ -29,18 +28,6 @@ func (s service) CreateUser(ctx context.Context, createUserReq CreateUserRequest
 		RoleID:    createUserReq.RoleID,
 	}
 
-	if reflect.DeepEqual(user.Username, "") {
-		return "Username cannot be empty", nil
-	}
-
-	if reflect.DeepEqual(user.Password, "") {
-		return "Password cannot be empty", nil
-	}
-
-	if reflect.DeepEqual(user.RoleID, nil) {
-		return "RoleID cannot be empty", nil
-	}
-
 	_, err := s.repository.CreateUser(ctx, user)
 
 	if err != nil {
@@ -51,4 +38,34 @@ func (s service) CreateUser(ctx context.Context, createUserReq CreateUserRequest
 	logger.Log("Create User", user.Username)
 
 	return "User Created Successfully", nil
+}
+
+func (s service) ListUsers(ctx context.Context) ([]db.Users, error){
+	logger := log.With(s.logger, "method", "ListUsers")
+
+	users, err := s.repository.ListUsers(ctx)
+
+	if err != nil {
+		level.Error(logger).Log("err", err)
+		return nil, err
+	}
+
+	logger.Log("List All Users")
+
+	return users, nil
+}
+
+func (s service) GetUser(ctx context.Context, id int32) (db.Users, error){
+	logger := log.With(s.logger, "method", "Getuser")
+
+	user, err := s.repository.GetUser(ctx, id)
+
+	if err != nil {
+		level.Error(logger).Log("err", err)
+		return user, err
+	}
+
+	logger.Log("Get User", user.Username)
+
+	return user, nil
 }

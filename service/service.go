@@ -31,6 +31,8 @@ type Service interface {
 		Services for Users
 	*******************************/
 	CreateUser(ctx context.Context, createUserRequest CreateUserRequest) (string, error)
+	ListUsers(ctx context.Context) ([]db.Users, error)
+	GetUser(ctx context.Context, id int32) (db.Users, error)
 
 	/******************************
 		Services for Authentication

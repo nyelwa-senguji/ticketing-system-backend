@@ -26,6 +26,8 @@ type Endpoint struct {
 		User Endpoints
 	*************************/
 	CreateUser endpoint.Endpoint
+	ListUsers endpoint.Endpoint
+	GetUser endpoint.Endpoint
 	LoginUser  endpoint.Endpoint
 }
 
@@ -42,6 +44,9 @@ func MakeEndpoints(s service.Service) Endpoint {
 		UpdateRole: makeUpdateRoleEndpoint(s),
 
 		CreateUser: makeCreateUserEndpoint(s),
+		ListUsers: makeListUsersEndpoint(s),
+		GetUser: makeGetUserEndpoint(s),
+		
 		LoginUser:  makeLoginUserEndpoint(s),
 	}
 }
