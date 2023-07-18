@@ -36,3 +36,10 @@ func NewPayload(username string, duration time.Duration) (*Payload, error) {
 
 	return payload, nil
 }
+
+func (paylaod *Payload) Valid() error{
+	if time.Now().After(paylaod.ExpiredAt){
+		return ErrExpiredToken
+	}
+	return nil
+}
