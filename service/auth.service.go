@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"reflect"
+	"time"
 
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/log/level"
@@ -37,7 +38,7 @@ func (s service) LoginUser(ctx context.Context, loginUserReq db.LoginUserParams)
 		return nil, "Incorrect Username/Password", level.Error(logger).Log("err", err)
 	}
 
-	token, err := s.tokenMaker.CreateToken(user.Username, 15)
+	token, err := s.tokenMaker.CreateToken(user.Username, 30 * time.Minute)
 	if err != nil {
 		return nil, "Could not create token", level.Error(logger).Log("err", err)
 	}
