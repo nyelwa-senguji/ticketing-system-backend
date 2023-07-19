@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"time"
 
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/log/level"
@@ -24,9 +25,13 @@ func (s service) AssignPermissionToRole(ctx context.Context, roleID int32, permi
 		return "This Permission is already assigned to this role", nil
 	}
 
+	time, _ := time.Parse("2006-01-02 15:04:05", time.Now().Format("2006-01-02 15:04:05"))
+
 	assignPermissionToRole := db.AssignPermissionToRoleParams{
-		RoleID: roleID,
+		RoleID:       roleID,
 		PermissionID: permissionID,
+		UpdatedAt: time,
+		CreatedAt: time,
 	}
 
 	_, err = s.repository.AssignPermissionToRole(ctx, assignPermissionToRole)

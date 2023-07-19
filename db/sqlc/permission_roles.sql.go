@@ -8,20 +8,28 @@ package db
 import (
 	"context"
 	"database/sql"
+	"time"
 )
 
 const assignPermissionToRole = `-- name: AssignPermissionToRole :execresult
-INSERT INTO permission_roles (permission_id, role_id)
-VALUES(?, ?)
+INSERT INTO permission_roles (permission_id, role_id, updated_at, created_at)
+VALUES(?, ?, ?, ?)
 `
 
 type AssignPermissionToRoleParams struct {
-	PermissionID int32 `json:"permission_id"`
-	RoleID       int32 `json:"role_id"`
+	PermissionID int32     `json:"permission_id"`
+	RoleID       int32     `json:"role_id"`
+	UpdatedAt    time.Time `json:"updated_at"`
+	CreatedAt    time.Time `json:"created_at"`
 }
 
 func (q *Queries) AssignPermissionToRole(ctx context.Context, arg AssignPermissionToRoleParams) (sql.Result, error) {
-	return q.db.ExecContext(ctx, assignPermissionToRole, arg.PermissionID, arg.RoleID)
+	return q.db.ExecContext(ctx, assignPermissionToRole,
+		arg.PermissionID,
+		arg.RoleID,
+		arg.UpdatedAt,
+		arg.CreatedAt,
+	)
 }
 
 const listAssignedPermissionsToRole = `-- name: ListAssignedPermissionsToRole :many

@@ -83,6 +83,21 @@ func NewHTTPServer(ctx context.Context, endpoints endpoint.Endpoint) http.Handle
 	))
 
 	/*****************************************************************
+		Permission Roles transport layer
+	******************************************************************/
+	a.Methods("POST").Path("/assign-permission-to-role").Handler(transport.NewServer(
+		endpoints.AssignPermissionToRole,
+		decodeAssignPermissionToRoleReq,
+		utils.EncodeResponse,
+	))
+
+	a.Methods("GET").Path("/assign-permission-to-role/{id}").Handler(transport.NewServer(
+		endpoints.ListAssignedPermissionsToRole,
+		decodeListAssignedPermissionToRoleReq,
+		utils.EncodeResponse,
+	))
+
+	/*****************************************************************
 		Users transport layer
 	******************************************************************/
 	a.Methods("POST").Path("/users").Handler(transport.NewServer(

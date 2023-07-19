@@ -58,6 +58,7 @@ func MakeEndpoints(s service.Service) Endpoint {
 		GetUser: makeGetUserEndpoint(s),
 
 		AssignPermissionToRole: makeAssignPermissionToRole(s),
+		ListAssignedPermissionsToRole: makeListAssignedPermissionsToRole(s),
 		
 		LoginUser:  makeLoginUserEndpoint(s),
 	}
