@@ -31,7 +31,9 @@ INSERT INTO `users` (`id`, `username`, `password`, `updated_at`, `created_at`, `
 
 CREATE TABLE `permission_roles` (
   `permission_id` int NOT NULL,
-  `role_id` int NOT NULL
+  `role_id` int NOT NULL,
+  `updated_at` timestamp NOT NULL,
+  `created_at` timestamp NOT NULL
 );
 
 CREATE TABLE `category` (
