@@ -55,8 +55,6 @@ func (s service) CreatePermission(ctx context.Context, permissionRequest CreateP
 func (s service) ListPermissions(ctx context.Context) ([]db.Permission, error) {
 	logger := log.With(s.logger, "method", "ListPermission")
 
-	var permissions []db.Permission
-
 	permissions, err := s.repository.ListPermissions(ctx)
 
 	if err != nil {

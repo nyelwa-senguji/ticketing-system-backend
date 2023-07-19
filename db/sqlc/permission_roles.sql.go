@@ -7,7 +7,22 @@ package db
 
 import (
 	"context"
+	"database/sql"
 )
+
+const assignPermissionToRole = `-- name: AssignPermissionToRole :execresult
+INSERT INTO permission_roles (permission_id, role_id)
+VALUES(?, ?)
+`
+
+type AssignPermissionToRoleParams struct {
+	PermissionID int32 `json:"permission_id"`
+	RoleID       int32 `json:"role_id"`
+}
+
+func (q *Queries) AssignPermissionToRole(ctx context.Context, arg AssignPermissionToRoleParams) (sql.Result, error) {
+	return q.db.ExecContext(ctx, assignPermissionToRole, arg.PermissionID, arg.RoleID)
+}
 
 const listAssignedPermissionsToRole = `-- name: ListAssignedPermissionsToRole :many
 SELECT permission_id FROM permission_roles

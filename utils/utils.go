@@ -91,3 +91,12 @@ func WriteJSON(w http.ResponseWriter, status int, v any) error {
 	w.WriteHeader(status)
 	return json.NewEncoder(w).Encode(v)
 }
+
+func IsAvailable(array []int32, value int32) bool {
+	for i := 0; i < len(array); i++ {
+		if array[i] == value {
+			return true
+		}
+	}
+	return false
+}

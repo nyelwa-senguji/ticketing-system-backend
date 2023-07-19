@@ -28,6 +28,16 @@ type Endpoint struct {
 	CreateUser endpoint.Endpoint
 	ListUsers endpoint.Endpoint
 	GetUser endpoint.Endpoint
+
+	/**********************************
+		Permission Roles Endpoints
+	***********************************/
+	AssignPermissionToRole endpoint.Endpoint
+	ListAssignedPermissionsToRole endpoint.Endpoint
+
+	/********************************
+		Authentication Endpoints
+	*********************************/
 	LoginUser  endpoint.Endpoint
 }
 
@@ -46,6 +56,8 @@ func MakeEndpoints(s service.Service) Endpoint {
 		CreateUser: makeCreateUserEndpoint(s),
 		ListUsers: makeListUsersEndpoint(s),
 		GetUser: makeGetUserEndpoint(s),
+
+		AssignPermissionToRole: makeAssignPermissionToRole(s),
 		
 		LoginUser:  makeLoginUserEndpoint(s),
 	}

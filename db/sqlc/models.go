@@ -25,8 +25,10 @@ type Permission struct {
 }
 
 type PermissionRoles struct {
-	PermissionID int32 `json:"permission_id"`
-	RoleID       int32 `json:"role_id"`
+	PermissionID int32     `json:"permission_id"`
+	RoleID       int32     `json:"role_id"`
+	UpdatedAt    time.Time `json:"updated_at"`
+	CreatedAt    time.Time `json:"created_at"`
 }
 
 type Roles struct {

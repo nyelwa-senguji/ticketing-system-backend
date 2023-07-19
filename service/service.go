@@ -34,6 +34,12 @@ type Service interface {
 	ListUsers(ctx context.Context) ([]db.Users, error)
 	GetUser(ctx context.Context, id int32) (db.Users, error)
 
+	/***********************************
+		Services for Permission Roles
+	************************************/
+	AssignPermissionToRole(ctx context.Context, roleID int32, permissionID int32) (string, error)
+	ListAssignedPermissionsToRole(ctx context.Context, roleID int32) ([]int32, error)
+
 	/******************************
 		Services for Authentication
 	*******************************/
