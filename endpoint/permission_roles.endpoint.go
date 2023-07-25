@@ -5,12 +5,19 @@ import (
 	"reflect"
 
 	"github.com/go-kit/kit/endpoint"
+	db "github.com/nyelwa-senguji/ticketing_system_backend/db/sqlc"
 	"github.com/nyelwa-senguji/ticketing_system_backend/service"
 	"github.com/nyelwa-senguji/ticketing_system_backend/utils"
 )
 
 type (
 	AssignPermissionToRoleResponse struct {
+		Status  int    `json:"status"`
+		Success bool   `json:"success"`
+		Message string `json:"message"`
+	}
+
+	RevokePermissionToRoleResponse struct {
 		Status  int    `json:"status"`
 		Success bool   `json:"success"`
 		Message string `json:"message"`
@@ -58,6 +65,14 @@ func makeListAssignedPermissionsToRole(s service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(ListAssignedPermissionsToRoleRequest)
 		ok, err := s.ListAssignedPermissionsToRole(ctx, req.RoleID)
-		return ListAssignedPermissionsToRoleResponse{Status: utils.StatusOK, Message: "Permissions assigned to role", PermissionID: ok }, err
+		return ListAssignedPermissionsToRoleResponse{Status: utils.StatusOK, Message: "Permissions assigned to role", PermissionID: ok}, err
+	}
+}
+
+func makeRevokePermissionToRole(s service.Service) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		req := request.(db.RevokePermissionRoleParams)
+		ok, err := s.RevokePermissionToRole(ctx, req.RoleID, req.PermissionID)
+		return RevokePermissionToRoleResponse{Status: utils.StatusOK, Success: true, Message: ok}, err
 	}
 }

@@ -97,6 +97,12 @@ func NewHTTPServer(ctx context.Context, endpoints endpoint.Endpoint) http.Handle
 		utils.EncodeResponse,
 	))
 
+	a.Methods("DELETE").Path("/revoke-permission-to-role").Handler(transport.NewServer(
+		endpoints.RevokePermissionToRole,
+		decodeRevokePermissionToRoleReq,
+		utils.EncodeResponse,
+	))
+
 	/*****************************************************************
 		Users transport layer
 	******************************************************************/

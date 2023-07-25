@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
+	db "github.com/nyelwa-senguji/ticketing_system_backend/db/sqlc"
 	"github.com/nyelwa-senguji/ticketing_system_backend/endpoint"
 )
 
@@ -28,3 +29,13 @@ func decodeListAssignedPermissionToRoleReq(ctx context.Context, r *http.Request)
 	}
 	return request, nil
 }
+
+func decodeRevokePermissionToRoleReq(ctx context.Context, r *http.Request) (interface{}, error) {
+	var req db.RevokePermissionRoleParams
+	err := json.NewDecoder(r.Body).Decode(&req)
+	if err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+

@@ -4,4 +4,7 @@ WHERE role_id = ?;
 
 -- name: AssignPermissionToRole :execresult
 INSERT INTO permission_roles (permission_id, role_id, updated_at, created_at)
-VALUES(?, ?, ?, ?)
+VALUES(?, ?, ?, ?);
+
+-- name: RevokePermissionRole :execresult
+DELETE FROM permission_roles WHERE permission_id=? AND role_id=?;

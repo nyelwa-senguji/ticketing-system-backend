@@ -59,3 +59,22 @@ func (s service) ListAssignedPermissionsToRole(ctx context.Context, roleID int32
 
 	return permissions, nil
 }
+
+func (s service) RevokePermissionToRole(ctx context.Context, roleID int32, permissionID int32) (string, error){
+	logger := log.With(s.logger, "method", "Listing Assigned Permission to Role")
+
+	revokePermissionRole := db.RevokePermissionRoleParams{
+		RoleID: roleID,
+		PermissionID: permissionID,
+	}
+
+	_, err := s.repository.RevokePermissionRole(ctx, revokePermissionRole)
+	if err != nil {
+		level.Error(logger).Log("err", err)
+		return "", err
+	}
+
+	logger.Log("Permissions revoked successfully to role")
+	
+	return "Permissions revoked successfully to role", nil
+}

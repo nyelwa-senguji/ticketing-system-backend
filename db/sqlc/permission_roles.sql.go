@@ -59,3 +59,16 @@ func (q *Queries) ListAssignedPermissionsToRole(ctx context.Context, roleID int3
 	}
 	return items, nil
 }
+
+const revokePermissionRole = `-- name: RevokePermissionRole :execresult
+DELETE FROM permission_roles WHERE permission_id=? AND role_id=?
+`
+
+type RevokePermissionRoleParams struct {
+	PermissionID int32 `json:"permission_id"`
+	RoleID       int32 `json:"role_id"`
+}
+
+func (q *Queries) RevokePermissionRole(ctx context.Context, arg RevokePermissionRoleParams) (sql.Result, error) {
+	return q.db.ExecContext(ctx, revokePermissionRole, arg.PermissionID, arg.RoleID)
+}

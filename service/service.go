@@ -39,6 +39,7 @@ type Service interface {
 	************************************/
 	AssignPermissionToRole(ctx context.Context, roleID int32, permissionID int32) (string, error)
 	ListAssignedPermissionsToRole(ctx context.Context, roleID int32) ([]int32, error)
+	RevokePermissionToRole(ctx context.Context, roleID int32, permissionID int32) (string, error)
 
 	/******************************
 		Services for Authentication
