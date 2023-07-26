@@ -40,7 +40,6 @@ func (s service) CreateRole(ctx context.Context, createRoleReq CreateRoleRequest
 	}
 
 	_, err := s.repository.CreateRole(ctx, role)
-
 	if err != nil {
 		level.Error(logger).Log("err", err)
 		return "", err
@@ -70,7 +69,6 @@ func (s service) GetRole(ctx context.Context, id int32) (db.Roles, error) {
 	logger := log.With(s.logger, "method", "GetRole")
 
 	role, err := s.repository.GetRole(ctx, id)
-
 	if err != nil {
 		level.Error(logger).Log("err", err)
 		return role, err
