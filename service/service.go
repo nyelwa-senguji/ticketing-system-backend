@@ -41,6 +41,13 @@ type Service interface {
 	ListAssignedPermissionsToRole(ctx context.Context, roleID int32) ([]int32, error)
 	RevokePermissionToRole(ctx context.Context, roleID int32, permissionID int32) (string, error)
 
+	/***********************************
+		Services for Category
+	************************************/
+	CreateCategory(ctx context.Context, createCategoryReq CreateCategoryRequest) (string, error)
+	GetCategory(ctx context.Context, id int32)(db.Category, error)
+	ListCategories(ctx context.Context) ([]db.Category, error)
+
 	/******************************
 		Services for Authentication
 	*******************************/
