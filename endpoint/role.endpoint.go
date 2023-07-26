@@ -74,7 +74,7 @@ func makeGetRoleEndpoint(s service.Service) endpoint.Endpoint {
 		if err != nil {
 			return GetRoleResponse{Status: utils.StatusBadRequest, Message: err.Error(), Role: ok}, nil
 		}
-		return GetRoleResponse{Status: utils.StatusOK, Message: "Role feched Successfuly", Role: ok}, err
+		return GetRoleResponse{Status: utils.StatusOK, Message: "Role fetched Successfuly", Role: ok}, err
 	}
 }
 

@@ -36,6 +36,13 @@ type Endpoint struct {
 	ListAssignedPermissionsToRole endpoint.Endpoint
 	RevokePermissionToRole endpoint.Endpoint
 
+	/**********************************
+		Category Endpoints
+	***********************************/
+	CreateCategory endpoint.Endpoint
+	GetCategory endpoint.Endpoint
+	ListCategories endpoint.Endpoint
+
 	/********************************
 		Authentication Endpoints
 	*********************************/
@@ -61,6 +68,10 @@ func MakeEndpoints(s service.Service) Endpoint {
 		AssignPermissionToRole: makeAssignPermissionToRole(s),
 		ListAssignedPermissionsToRole: makeListAssignedPermissionsToRole(s),
 		RevokePermissionToRole: makeRevokePermissionToRole(s),
+
+		CreateCategory: makeCreateCategoryEndpoint(s),
+		GetCategory: makeGetCategoryEndpoint(s),
+		ListCategories: makeListCategoriesEndpoint(s),
 		
 		LoginUser:  makeLoginUserEndpoint(s),
 	}
