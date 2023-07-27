@@ -62,7 +62,7 @@ func makeGetCategoryEndpoint(s service.Service) endpoint.Endpoint {
 		if err != nil {
 			return GetCategoryResponse{Status: utils.StatusBadRequest, Message: err.Error(), Category: ok}, nil
 		}
-		return GetCategoryResponse{Status: utils.StatusBadRequest, Message: "Category fetched Successfully", Category: ok}, err
+		return GetCategoryResponse{Status: utils.StatusOK, Message: "Category fetched Successfully", Category: ok}, err
 	}
 }
 
