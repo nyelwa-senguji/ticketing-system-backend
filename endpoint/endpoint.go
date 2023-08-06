@@ -26,27 +26,33 @@ type Endpoint struct {
 		User Endpoints
 	*************************/
 	CreateUser endpoint.Endpoint
-	ListUsers endpoint.Endpoint
-	GetUser endpoint.Endpoint
+	ListUsers  endpoint.Endpoint
+	GetUser    endpoint.Endpoint
 
 	/**********************************
 		Permission Roles Endpoints
 	***********************************/
-	AssignPermissionToRole endpoint.Endpoint
+	AssignPermissionToRole        endpoint.Endpoint
 	ListAssignedPermissionsToRole endpoint.Endpoint
-	RevokePermissionToRole endpoint.Endpoint
+	RevokePermissionToRole        endpoint.Endpoint
 
 	/**********************************
 		Category Endpoints
 	***********************************/
 	CreateCategory endpoint.Endpoint
-	GetCategory endpoint.Endpoint
+	GetCategory    endpoint.Endpoint
 	ListCategories endpoint.Endpoint
+
+	/**********************************
+		Ticket Endpoints
+	***********************************/
+	CreateTicket endpoint.Endpoint
+	ListTickets  endpoint.Endpoint
 
 	/********************************
 		Authentication Endpoints
 	*********************************/
-	LoginUser  endpoint.Endpoint
+	LoginUser endpoint.Endpoint
 }
 
 func MakeEndpoints(s service.Service) Endpoint {
@@ -62,17 +68,20 @@ func MakeEndpoints(s service.Service) Endpoint {
 		UpdateRole: makeUpdateRoleEndpoint(s),
 
 		CreateUser: makeCreateUserEndpoint(s),
-		ListUsers: makeListUsersEndpoint(s),
-		GetUser: makeGetUserEndpoint(s),
+		ListUsers:  makeListUsersEndpoint(s),
+		GetUser:    makeGetUserEndpoint(s),
 
-		AssignPermissionToRole: makeAssignPermissionToRole(s),
+		AssignPermissionToRole:        makeAssignPermissionToRole(s),
 		ListAssignedPermissionsToRole: makeListAssignedPermissionsToRole(s),
-		RevokePermissionToRole: makeRevokePermissionToRole(s),
+		RevokePermissionToRole:        makeRevokePermissionToRole(s),
 
 		CreateCategory: makeCreateCategoryEndpoint(s),
-		GetCategory: makeGetCategoryEndpoint(s),
+		GetCategory:    makeGetCategoryEndpoint(s),
 		ListCategories: makeListCategoriesEndpoint(s),
-		
-		LoginUser:  makeLoginUserEndpoint(s),
+
+		CreateTicket: makeCreateTicketEndpoint(s),
+		ListTickets: makeListTicketsEndpoint(s),
+
+		LoginUser: makeLoginUserEndpoint(s),
 	}
 }

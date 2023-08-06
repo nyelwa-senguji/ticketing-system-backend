@@ -104,6 +104,21 @@ func NewHTTPServer(ctx context.Context, endpoints endpoint.Endpoint) http.Handle
 	))
 
 	/*****************************************************************
+		Ticket transport layer
+	******************************************************************/
+	a.Methods("POST").Path("/tickets").Handler(transport.NewServer(
+		endpoints.CreateTicket,
+		decodeCreateTicketReq,
+		utils.EncodeResponse,
+	))
+
+	a.Methods("GET").Path("/tickets").Handler(transport.NewServer(
+		endpoints.ListTickets,
+		decodeListTicketsReq,
+		utils.EncodeResponse,
+	))
+
+	/*****************************************************************
 		Permission Roles transport layer
 	******************************************************************/
 	a.Methods("POST").Path("/assign-permission-to-role").Handler(transport.NewServer(

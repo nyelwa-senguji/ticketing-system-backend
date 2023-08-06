@@ -48,6 +48,12 @@ type Service interface {
 	GetCategory(ctx context.Context, id int32)(db.Category, error)
 	ListCategories(ctx context.Context) ([]db.Category, error)
 
+	/***********************************
+		Services for Tickets
+	************************************/
+	CreateTicket(ctx context.Context, createTicketReq CreateTicketRequest) (string, error)
+	ListTickets(ctx context.Context) ([]ListTicketsResponse, error)
+
 	/******************************
 		Services for Authentication
 	*******************************/
