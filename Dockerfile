@@ -5,6 +5,7 @@ WORKDIR /app
 
 # Download Go modules
 COPY go.mod go.sum ./
+RUN cp .env.example .env
 RUN go mod download
 
 # Copy the source code. Note the slash at the end, as explained in
