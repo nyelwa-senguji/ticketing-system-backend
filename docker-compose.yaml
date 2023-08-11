@@ -7,8 +7,6 @@ services:
     build:
       dockerfile: Dockerfile
       context: .
-    ports:
-      -"9000:9000"
     environment:
       - VIRTUAL_HOST=ticketing
       - LETSENCRYPT_HOST=tiketing
