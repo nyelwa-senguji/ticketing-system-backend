@@ -1,0 +1,10 @@
+version: '3'
+services:
+  ticketing-system:
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: .
+    environment:
+      - VIRTUAL_HOST=ticketing
+      - LETSENCRYPT_HOST=tiketing
