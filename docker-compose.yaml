@@ -4,8 +4,6 @@ services:
 
   ticketing-system:
     restart: always
-    env_file:
-      - .env
     build:
       dockerfile: Dockerfile
       context: .
