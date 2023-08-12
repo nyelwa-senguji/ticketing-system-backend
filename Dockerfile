@@ -12,6 +12,7 @@ RUN cp .env.example .env
 # Copy the source code. Note the slash at the end, as explained in
 # https://docs.docker.com/engine/reference/builder/#copy
 COPY . ./
+COPY .env ./
 
 # Build
 RUN CGO_ENABLED=0 GOOS=linux go build -o /ticketing_system_backend
