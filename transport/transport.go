@@ -26,6 +26,11 @@ func NewHTTPServer(ctx context.Context, endpoints endpoint.Endpoint) http.Handle
 		decodeLoginUserReq,
 		utils.EncodeResponse,
 	))
+	r.Methods("GET").Path("/test").Handler(transport.NewServer(
+		endpoints.TestEndpoint,
+		decodeListRolesReq,
+		utils.EncodeResponse,
+	))
 
 	/*****************************************************************
 		Permissions transport layer

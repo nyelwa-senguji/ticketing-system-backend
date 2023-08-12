@@ -21,6 +21,7 @@ type Endpoint struct {
 	ListRoles  endpoint.Endpoint
 	GetRole    endpoint.Endpoint
 	UpdateRole endpoint.Endpoint
+	TestEndpoint endpoint.Endpoint
 
 	/************************
 		User Endpoints
@@ -66,6 +67,7 @@ func MakeEndpoints(s service.Service) Endpoint {
 		ListRoles:  makeListRolesEndpoint(s),
 		GetRole:    makeGetRoleEndpoint(s),
 		UpdateRole: makeUpdateRoleEndpoint(s),
+		TestEndpoint: makeTestEndpoint(s),
 
 		CreateUser: makeCreateUserEndpoint(s),
 		ListUsers:  makeListUsersEndpoint(s),
