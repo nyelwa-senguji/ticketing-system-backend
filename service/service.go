@@ -7,7 +7,6 @@ import (
 
 	db "github.com/nyelwa-senguji/ticketing_system_backend/db/sqlc"
 	"github.com/nyelwa-senguji/ticketing_system_backend/token"
-	"github.com/nyelwa-senguji/ticketing_system_backend/utils"
 )
 
 type Service interface {
@@ -45,7 +44,7 @@ type Service interface {
 		Services for Category
 	************************************/
 	CreateCategory(ctx context.Context, createCategoryReq CreateCategoryRequest) (string, error)
-	GetCategory(ctx context.Context, id int32)(db.Category, error)
+	GetCategory(ctx context.Context, id int32) (db.Category, error)
 	ListCategories(ctx context.Context) ([]db.Category, error)
 
 	/***********************************
@@ -67,7 +66,7 @@ type service struct {
 }
 
 func NewService(repo *db.Repository, logger log.Logger) Service {
-	tokenMaker, _ := token.NewPasetoMaker(utils.LoadEnviromentalVariables("SECRET_KEY"))
+	tokenMaker, _ := token.NewPasetoMaker("f4b49eb23-23ebs567ju-acv78kl2832")
 	return &service{
 		repository: repo,
 		logger:     logger,

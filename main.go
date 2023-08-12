@@ -18,14 +18,13 @@ import (
 	"github.com/nyelwa-senguji/ticketing_system_backend/endpoint"
 	"github.com/nyelwa-senguji/ticketing_system_backend/service"
 	httptransport "github.com/nyelwa-senguji/ticketing_system_backend/transport"
-	"github.com/nyelwa-senguji/ticketing_system_backend/utils"
 )
 
 func main() {
-	dbUsername := utils.LoadEnviromentalVariables("DB_USER")
-	dbPassword := utils.LoadEnviromentalVariables("DB_PASSWORD")
-	dbPort := utils.LoadEnviromentalVariables("DB_PORT")
-	dbName := utils.LoadEnviromentalVariables("DB_NAME")
+	dbUsername := "root"
+	dbPassword := "root"
+	dbPort := "3306"
+	dbName := "ticketing_database"
 
 	dbsource := dbUsername + ":" + dbPassword + "@tcp(localhost:" + dbPort + ")/" + dbName + "?parseTime=true"
 

@@ -20,7 +20,7 @@ type middleware struct {
 }
 
 func NewMiddleware() Middleware {
-	tokenMaker, _ := token.NewPasetoMaker(utils.LoadEnviromentalVariables("SECRET_KEY"))
+	tokenMaker, _ := token.NewPasetoMaker("f4b49eb23-23ebs567ju-acv78kl2832")
 	return &middleware{
 		tokenMaker: tokenMaker,
 	}

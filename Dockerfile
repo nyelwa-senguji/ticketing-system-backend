@@ -1,35 +1,27 @@
-# Start from golang base image
-FROM golang:alpine as builder
+FROM golang:1.19
 
-# ENV GO111MODULE=on
-
-# Set the current working directory inside the container 
+# Set destination for COPY
 WORKDIR /app
 
-# Copy go mod and sum files 
+# Download Go modules
 COPY go.mod go.sum ./
+RUN go mod download
 
-# Download all dependencies. Dependencies will be cached if the go.mod and the go.sum files are not changed 
-RUN go mod download 
 
-# Copy the source from the current directory to the working Directory inside the container 
-COPY . .
+# Copy the source code. Note the slash at the end, as explained in
+# https://docs.docker.com/engine/reference/builder/#copy
+COPY . ./
 
-# Build the Go app
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
 
-# Start a new stage from scratch
-FROM alpine:latest
-#RUN apk --no-cache add ca-certificates
+# Build
+RUN CGO_ENABLED=0 GOOS=linux go build -o /ticketing_system_backend
 
-WORKDIR /root/
+# Optional:
+# To bind to a TCP port, runtime parameters must be supplied to the docker command.
+# But we can document in the Dockerfile what ports
+# the application is going to listen on by default.
+# https://docs.docker.com/engine/reference/builder/#expose
+EXPOSE 9000
 
-# Copy the Pre-built binary file from the previous stage. Observe we also copied the .env file
-COPY --from=builder /app/main .
-COPY --from=builder /app/.env .       
-
-# Expose port 8080 to the outside world
-EXPOSE 8080
-
-#Command to run the executable
-CMD ["./main"]
+# Run
+CMD ["/ticketing_system_backend"]
