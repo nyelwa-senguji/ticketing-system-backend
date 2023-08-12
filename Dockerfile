@@ -6,6 +6,8 @@ WORKDIR /app
 # Download Go modules
 COPY go.mod go.sum ./
 RUN go mod download
+COPY .env.example ./
+RUN cp .env.example .env
 
 # Copy the source code. Note the slash at the end, as explained in
 # https://docs.docker.com/engine/reference/builder/#copy
