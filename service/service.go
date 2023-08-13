@@ -7,6 +7,7 @@ import (
 
 	db "github.com/nyelwa-senguji/ticketing_system_backend/db/sqlc"
 	"github.com/nyelwa-senguji/ticketing_system_backend/token"
+	"github.com/nyelwa-senguji/ticketing_system_backend/utils"
 )
 
 type Service interface {
@@ -66,7 +67,7 @@ type service struct {
 }
 
 func NewService(repo *db.Repository, logger log.Logger) Service {
-	tokenMaker, _ := token.NewPasetoMaker("f4b49eb23-23ebs567ju-acv78kl2832")
+	tokenMaker, _ := token.NewPasetoMaker(utils.LoadEnviromentalVariables("SECRET_KEY"))
 	return &service{
 		repository: repo,
 		logger:     logger,
