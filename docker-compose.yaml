@@ -15,8 +15,7 @@ services:
 
 
   fullstack-mysql:
-    platform: linux/x86_64
-    image: mysql:latest
+    image: mariadb:10.5
     container_name: full_db_mysql
     ports: 
       - 3306:3306
